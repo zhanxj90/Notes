@@ -43,6 +43,9 @@
     - git push
     - git pull
 
+    实例没有prototype属性，只有__proto__。构造函数两者都有
+
+
 git命令操作
 
 vue路由模式
@@ -157,16 +160,29 @@ https://zhuanlan.zhihu.com/p/94577244
     - apply方法会在compiler暴露出来的hook钩子上执行
     ``` js
     apply(compiler){
-        compiler.hooks.beforeRun.tap(
-            'testPlugin', //插件名
-            (comp) => {   
-                // ... 
-            }
-        );
+      compiler.hooks.beforeRun.tap(
+        'testPlugin',//插件名
+        (comp) => {   
+            // ... 
+        }
+      );
     }
     ```
 
 那loader插件呢
+  - 每个loader都是向外暴露一个函数
+  - 解析时函数会接收到webpack传入的文件文本 字符串code
+  - 函数内部可以自定义处理字符串的过程
+  - this.callback(错误信息，处理后的字符串，source-map)，如果不需要其他信息只传回处理结果可以用return code
+  ``` js
+  // 只是简单的处理，打包成npm包还要其他操作吧
+  module.exports = function(code) {
+    // 自己要做的处理
+    code = code.replace(/log/g, 'console.log')
+    let error = null
+    this.callback(error, code)
+  }
+  ```
 https://blog.csdn.net/weixin_30839881/article/details/100090500
 https://www.jianshu.com/p/3a9b2e42a142
 
@@ -226,9 +242,32 @@ node在实际中运用的场景有哪些
 
 promise原理
 vue优化
-webpack用了什么插件，loder是怎么加载的
+  - 代码模块化
+  - for循环设置key值
+  - 使用keep-alive
+  - Vue路由设置成懒加载
+  - 按需引入
+  - 减少图片的使用
+  - 不生成 map 文件
+  - 不常改变的库使用 cdn 引入
+
+webpack用了什么插件
+  - terser-webpack-plugin：压缩js的，删除注释、debugger、console，多进程编译，删除map映射
+  - CompressionPlugin：压缩文件
+
+loder是怎么加载的
+  chainWebpack中链式调用：config.module.rule.use().loader()
+
 封装的公共组件有哪些
+  - 基础组件：用户头像，老师头像，音频按钮，loading
+  - 进阶组件：svg，弹窗，toast
+
 弹窗的实现 怎么挂载
+  - 定义公共组件：
+    插件方式注入（直接组件名使用，类似el-radio这种）：vue.use(install(Vue.component(component.name, component)))
+    子组件引入：import引入，这种一般是弹窗有些个性化设置，不是全局的
+  - 绑定到原型上（Vue.prototype），类似我们项目的loading：定义展示，卸载方法；new Vue.extend(loading)编译一个vue组件子类；$mount()挂载，挂载方法带参会替换原dom，不带参则挂在内存；document.body.appendChild(instance.$el)绑定到元素上
+
 
 vue2 3的传值，有什么区别
     - vu2:props,$emit,event bus

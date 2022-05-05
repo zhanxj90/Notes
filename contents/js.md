@@ -177,6 +177,8 @@ https://zhuanlan.zhihu.com/p/94577244
   ``` js
   // 只是简单的处理，打包成npm包还要其他操作吧
   module.exports = function(code) {
+    // 获取options配置项
+    const options = loaderUtils.getOptions(this)
     // 自己要做的处理
     code = code.replace(/log/g, 'console.log')
     let error = null
@@ -224,10 +226,10 @@ express，用callback，不严格，异步的后执行
 mongose的一些操作
 
 node的核心模块有哪些
-http：搭建服务，监听端口
-fs:文件浏览，文件处理
-url:地址处理
-path：路径处理
+    - http：搭建服务，监听端口
+    - fs:文件浏览，文件处理
+    - url:地址处理
+    - path：路径处理
 
 你在项目中遇到了那些难点
 护眼功能标签页之间的数据互通，
@@ -271,11 +273,11 @@ loder是怎么加载的
 
 vue2 3的传值，有什么区别
     - vu2:props,$emit,event bus
-emit/on
-vuex
-attrs/listeners(会获取到没有在props里接收的)
-provide/inject
-parent/children 与 ref
+        emit/on
+        vuex
+        attrs/listeners(会获取到没有在props里接收的)
+        provide/inject
+        parent/children 与 ref
     - vue3:props通过setup(props, context)中的props接收，$emit==context.emit
         event bus:const vueEvent = mitt()
         https://www.cnblogs.com/daifuchao/p/15029995.html
@@ -348,3 +350,61 @@ https://www.cnblogs.com/ranyonsue/p/11201730.html
     Son.prototype.constructor = Son
     ```
 - class+extends继承:es6语法。和寄生组合式继承区别在于不需要手动修改Son.prototype.constructor，并且Son._proto_指向的是父类（寄生组合式继承因手动修改了所以指向的是Function.prototype)
+
+
+有使用过混入（mixin），和组件的区别
+### mixin释义
+  - 混合 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。
+  - 混合对象可以包含任意组件选项。
+  - 当组件使用混合对象时，所有混合对象的选项将被混入该组件本身的选项。
+
+### mixin和组件的区别
+  - 组件相当于在父组件内开辟了一块单独的空间，来根据父组件props过来的值进行相应的操作，单本质上两者还是泾渭分明，相对独立。
+  - mixin则是将父组件里的内容和mixin的合并，扩充父组件内容，mixin就相当于基础数据
+
+
+动态路由权限添加
+  ```js
+  router.beforeEach((to, from, next) => {
+    if (!store.state.UserToken) {
+        ...
+    } else {
+        /* 现在有token了,permissionList判断路由是否添加完成了 */
+        if (!store.state.permission.permissionList) {
+            /* 如果没有permissionList，真正的工作开始了 */
+            store.dispatch('permission/FETCH_PERMISSION').then(() => {
+                next({ path: to.path })
+            })
+        } else {
+            if (to.path !== '/login') {
+                next()
+            } else {
+                next(from.fullPath)
+            }
+        }
+    }
+  })
+  async FETCH_PERMISSION({ commit, state }) {
+        /*  获取后台给的权限数组 */
+        let permissionList = await fetchPermission()
+        /**
+          * 根据后台权限跟我们定义好的权限对比，筛选出对应的路由并加入到path=''的children
+          * recursionRouter:路由循环遍历匹配方法
+          * DynamicRoutes：动态基础路由，包含home页，*重定向404（这个放这是防止刷新时跳到404）
+          */
+        let routes = recursionRouter(permissionList, dynamicRouter)
+        let MainContainer = DynamicRoutes.find(v => v.path === '')
+        let children = MainContainer.children
+        children.push(...routes)
+        /* 生成左侧导航菜单 */
+        commit('SET_MENU', children)
+        setDefaultRoute([MainContainer])
+        /*  初始路由 */
+        let initialRoutes = router.options.routes
+        /*  动态添加路由,主要方法，在app created里触发，接口获取防止刷新失效 */
+        router.addRoutes(DynamicRoutes)
+        /* 完整的路由表 */
+        commit('SET_PERMISSION', [...initialRoutes, ...DynamicRoutes])
+    }
+  ```
+  https://refined-x.com/2017/09/01/%E7%94%A8addRoutes%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1/

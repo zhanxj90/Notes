@@ -1,49 +1,56 @@
 # JavaScript
+
 ## es6
-    > es6通常是指es2017，但是2018-2022新增内容没有划分出es新版本，所以这些也归类至es6里
+  > es6通常是指es2017，但是2018-2022新增内容没有划分出es新版本，所以这些也归类至es6里
+
 ### es6数组方法
-    - push
-    - pop
-    - shift
-    - unshift
-    - splice 
-    - split
-    - map:更新数组
-    - forEach() -----循环
-    - filter()、
-    - includes()、
-    - find()、
-    - findIndex()— —筛选（删除）数组
-    - some()、
-    - every()— —判断数组
-    - reduce()— —叠加数组
+  - push
+  - pop
+  - shift
+  - unshift
+  - splice 
+  - split
+  - map:更新数组
+  - forEach() -----循环
+  - filter()、
+  - includes()、
+  - find()、
+  - findIndex()— —筛选（删除）数组
+  - some()、
+  - every()— —判断数组
+  - reduce()— —叠加数组
 
 ## promise
+
 ### promise释义
-    > Promise 是异步编程的一种解决方案，其实是一个构造函数，自己身上有all、reject、resolve这几个方法，原型上有then、catch等方法。
-    - Promise对象的状态不受外界影响,有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。
-    - Promise一旦状态改变，就不会再变，任何时候都可以得到这个结果。
-    - 解决了回调地狱（异步方法中callback函数嵌套其他异步，一层一层的）的问题
+  > Promise 是异步编程的一种解决方案，其实是一个构造函数，自己身上有all、reject、resolve这几个方法，原型上有then、catch等方法。
+  - Promise对象的状态不受外界影响,有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。
+  - Promise一旦状态改变，就不会再变，任何时候都可以得到这个结果。
+  - 解决了回调地狱（异步方法中callback函数嵌套其他异步，一层一层的）的问题
+
 ### 成功回调（resolve,then)
-    - 
+  - 
+
 ### 失败回调（reject,catch)
-    -
+  - 
+
 ### all的使用
-    - all方法是在Promise类上的，通过Promise.all使用。all接收一个数组参数(参数不一定是要promise，有返回就有值),数组全执行完才返回，有一个错了就走catch，全对才走then
+  - all方法是在Promise类上的，通过Promise.all使用。all接收一个数组参数(参数不一定是要promise，有返回就有值),数组全执行完才返回，有一个错了就走catch，全对才走then
+
 ### race的使用
-    - race方法是在Promise类上的，通过Promise.race使用。也是接收数组（同all），数组有个执行完了立马返回，对就then，错就catch。
+  - race方法是在Promise类上的，通过Promise.race使用。也是接收数组（同all），数组有个执行完了立马返回，对就then，错就catch。
 
 ## git命令
-    - git clone
-    - git branch
-    - git remote prune origin
-    - git add
-    - git status
-    - git commit
-    - git push
-    - git pull
+  - git clone
+  - git branch
+  - git remote prune origin
+  - git add
+  - git status
+  - git commit
+  - git push
+  - git pull
 
-    实例没有prototype属性，只有__proto__。构造函数两者都有
+  实例没有prototype属性，只有__proto__。构造函数两者都有
 
 
 git命令操作

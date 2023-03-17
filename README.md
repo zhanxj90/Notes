@@ -10,5 +10,8 @@
 ## [JavaScript](./contents/js.md)
   JavaScript是前端基础，框架都是基于此封装的，一定要学好哟
 
+## [TypeScript](./contents/ts.md)
+  TypeScript是js的超集，进阶内容，未来主流
+
 ## [vue2](./contents/vue.md)
   vue,三大前端框架之一，vue2现有大多数开发维护项目的使用框架

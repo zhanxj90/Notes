@@ -10,6 +10,9 @@
 ## [JavaScript](./contents/js.md)
   JavaScript是前端基础，框架都是基于此封装的，一定要学好哟
 
+## [IJS](./contents/ijs.md)
+  一些有趣的JavaScript知识，不一定会使用到，但是造火箭多半会遇到的；遇到即是缘分
+
 ## [TypeScript](./contents/ts.md)
   TypeScript是js的超集，进阶内容，未来主流
 

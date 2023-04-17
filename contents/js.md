@@ -2,43 +2,265 @@
 
 ## es6
   > es6通常是指es2017，但是2018-2022新增内容没有划分出es新版本，所以这些也归类至es6里
+### *es6数组方法*
+  1. push
+  2. pop
+  3. shift
+  4. unshift
+  5. splice 
+  6. split
+  7. map:更新数组
+  8. forEach() -----循环
+  9. filter()、
+  10. includes()、
+  11. find()、
+  12. findIndex()— —筛选（删除）数组
+  13. some()、
+  14. every()— —判断数组
+  15. reduce()— —叠加数组
 
-### es6数组方法
-  - push
-  - pop
-  - shift
-  - unshift
-  - splice 
-  - split
-  - map:更新数组
-  - forEach() -----循环
-  - filter()、
-  - includes()、
-  - find()、
-  - findIndex()— —筛选（删除）数组
-  - some()、
-  - every()— —判断数组
-  - reduce()— —叠加数组
+### *rest 参数*
+  1. ES6中引入rest参数(形式为'...变量名')，用于获取函数的多余参数
+  2. rest参数是真正意义上的数组，可以使用数组的任何方法
+  3. 对于函数的length属性，不包含rest
+  4. rest参数之后不能再有其他参数(即只能是最后一个参数)。在它之后不能存在任何其他的参数，否则会报错
+  ```js
+    function fn(a,b,...rest) {
+        console.log(rest) //[ 3, 4, 5 ]
+    }
+    fn(1,2,3,4,5)
+    console.log(fn.length)  //2
+  ```
+
+-----
 
 ## promise
-
-### promise释义
+### *promise释义*
   > Promise 是异步编程的一种解决方案，其实是一个构造函数，自己身上有all、reject、resolve这几个方法，原型上有then、catch等方法。
-  - Promise对象的状态不受外界影响,有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。
-  - Promise一旦状态改变，就不会再变，任何时候都可以得到这个结果。
-  - 解决了回调地狱（异步方法中callback函数嵌套其他异步，一层一层的）的问题
-
-### 成功回调（resolve,then)
-  - 
-
-### 失败回调（reject,catch)
-  - 
-
-### all的使用
-  - all方法是在Promise类上的，通过Promise.all使用。all接收一个数组参数(参数不一定是要promise，有返回就有值),数组全执行完才返回，有一个错了就走catch，全对才走then
-
-### race的使用
+  1. Promise对象的状态不受外界影响,有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。
+  2. Promise一旦状态改变，就不会再变，任何时候都可以得到这个结果。
+  3. 解决了回调地狱（异步方法中callback函数嵌套其他异步，一层一层的）的问题
+### *成功回调（resolve,then)*
+  1. 
+### *失败回调（reject,catch)*
+  1. 
+### *all的使用*
+  1. all方法是在Promise类上的，通过Promise.all使用。all接收一个数组参数(参数不一定是要promise，有返回就有值),数组全执行完才返回，有一个错了就走catch，全对才走then
+### *race的使用*
   - race方法是在Promise类上的，通过Promise.race使用。也是接收数组（同all），数组有个执行完了立马返回，对就then，错就catch。
+### *手写Promise*
+  ```js
+    // 先定义三个常量表示状态
+    const PENDING = "pending";
+    const FULFILLED = "fulfilled";
+    const REJECTED = "rejected";
+
+    // 新建 MyPromise 类
+    class MyPromise {
+      constructor(executor) {
+        // executor 是一个执行器，进入会立即执行
+        // 并传入resolve和reject方法
+        try {
+          executor(this.resolve, this.reject);
+        } catch (error) {
+          this.reject(error);
+        }
+      }
+
+      // 储存状态的变量，初始值是 pending
+      status = PENDING;
+      // 成功之后的值
+      value = null;
+      // 失败之后的原因
+      reason = null;
+
+      // 存储成功回调函数
+      onFulfilledCallbacks = [];
+      // 存储失败回调函数
+      onRejectedCallbacks = [];
+
+      // 更改成功后的状态
+      resolve = (value) => {
+        // 只有状态是等待，才执行状态修改
+        if (this.status === PENDING) {
+          // 状态修改为成功
+          this.status = FULFILLED;
+          // 保存成功之后的值
+          this.value = value;
+          // resolve里面将所有成功的回调拿出来执行
+          while (this.onFulfilledCallbacks.length) {
+            // Array.shift() 取出数组第一个元素，然后（）调用，shift不是纯函数，取出后，数组将失去该元素，直到数组为空
+            this.onFulfilledCallbacks.shift()(value);
+          }
+        }
+      };
+
+      // 更改失败后的状态
+      reject = (reason) => {
+        // 只有状态是等待，才执行状态修改
+        if (this.status === PENDING) {
+          // 状态成功为失败
+          this.status = REJECTED;
+          // 保存失败后的原因
+          this.reason = reason;
+          // resolve里面将所有失败的回调拿出来执行
+          while (this.onRejectedCallbacks.length) {
+            this.onRejectedCallbacks.shift()(reason);
+          }
+        }
+      };
+
+      then(onFulfilled, onRejected) {
+        const realOnFulfilled =
+          typeof onFulfilled === "function" ? onFulfilled : (value) => value;
+        const realOnRejected =
+          typeof onRejected === "function"
+            ? onRejected
+            : (reason) => {
+                throw reason;
+              };
+
+        // 为了链式调用这里直接创建一个 MyPromise，并在后面 return 出去
+        const promise2 = new MyPromise((resolve, reject) => {
+          const fulfilledMicrotask = () => {
+            // 创建一个微任务等待 promise2 完成初始化
+            queueMicrotask(() => {
+              try {
+                // 获取成功回调函数的执行结果
+                const x = realOnFulfilled(this.value);
+                // 传入 resolvePromise 集中处理
+                resolvePromise(promise2, x, resolve, reject);
+              } catch (error) {
+                reject(error);
+              }
+            });
+          };
+
+          const rejectedMicrotask = () => {
+            // 创建一个微任务等待 promise2 完成初始化
+            queueMicrotask(() => {
+              try {
+                // 调用失败回调，并且把原因返回
+                const x = realOnRejected(this.reason);
+                // 传入 resolvePromise 集中处理
+                resolvePromise(promise2, x, resolve, reject);
+              } catch (error) {
+                reject(error);
+              }
+            });
+          };
+          // 判断状态
+          if (this.status === FULFILLED) {
+            fulfilledMicrotask();
+          } else if (this.status === REJECTED) {
+            rejectedMicrotask();
+          } else if (this.status === PENDING) {
+            // 等待
+            // 因为不知道后面状态的变化情况，所以将成功回调和失败回调存储起来
+            // 等到执行成功失败函数的时候再传递
+            this.onFulfilledCallbacks.push(fulfilledMicrotask);
+            this.onRejectedCallbacks.push(rejectedMicrotask);
+          }
+        });
+
+        return promise2;
+      }
+
+      // resolve 静态方法(直接调用Promise.resolve)
+      static resolve(parameter) {
+        // 如果传入 MyPromise 就直接返回
+        if (parameter instanceof MyPromise) {
+          return parameter;
+        }
+
+        // 转成常规方式
+        return new MyPromise((resolve) => {
+          resolve(parameter);
+        });
+      }
+
+      // reject 静态方法(直接调用Promise.reject)
+      static reject(reason) {
+        return new MyPromise((resolve, reject) => {
+          reject(reason);
+        });
+      }
+    }
+
+    function resolvePromise(promise2, x, resolve, reject) {
+      // 如果相等了，说明return的是自己，抛出类型错误并返回
+      if (promise2 === x) {
+        return reject(
+          new TypeError("Chaining cycle detected for promise #<Promise>")
+        );
+      }
+      // 判断x是不是 MyPromise 实例对象
+      if (x instanceof MyPromise) {
+        // 执行 x，调用 then 方法，目的是将其状态变为 fulfilled 或者 rejected
+        // x.then(value => resolve(value), reason => reject(reason))
+        // 简化之后
+        x.then(resolve, reject);
+      } else {
+        // 普通值
+        resolve(x);
+      }
+    }
+
+    module.exports = MyPromise;
+  ```
+
+-----
+
+## 隐式转换
+### *数字运算*
+  1. +：将表达式的值转换为String（仅当有一个是String类型）,否则转换成Number
+  2. －：将表达式的值转换为Number
+  3. *：将表达式的值转换为Number
+  4. /：将表达式的值转换为Number
+### *比较运算符*
+  1. 全等和不全等——仅比较而不转换（===）;类型不同即返回false
+  2. 相等和不相等——先转换再比较（==）
+    - 如果操作数有运算符处理（比如自增，加减，取反等），可能要根据运算符优先级，先把操作数的前置运算都做完先（如：a==!b,要先!b取反）
+    - 特殊比较：不能将null 和 undefined 转换成其他任何值(null==0和null==1都是false),null 和undefined 是相等的
+    - 如果有一个操作数是NaN，则相等操作符返回 false ，而不相等操作符返回 true。即使两个操作数都是NaN，相等操作符也返回 false；因为按照规则， NaN 不等于 NaN
+    - 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值——false转换为0，而true转换为1
+    - 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值
+    - 如果一个操作数是对象，另一个操作数是基本类型，则调用toPrimitive把对象转换成基本类型，用得到的基本类型值按照前面的规则进行比较
+    - 如果两个操作数都是对象，则比较它们是不是同一个对象，如果两个操作数都指向同一个对象，则相等操作符返回 true；否则， 返回false
+    - 如果是字符串，就通过 unicode 字符索引来比较
+  比较运算图示：[/assets/比较运算符.png]
+### *toPrimitive*
+> toPrimitive(input,preferedType?),内部函数,将对象转换成原始值;input是输入的值，preferedType是期望转换的类型(字符串或数字)
+  1. preferedType可省略，日期会被认为是字符串，而其他的值会被当做Number
+  2. 如果转换的类型是number:
+    - input是原始值，直接返回这个值
+    - 否则，如果input是对象，调用input.valueOf()，如果结果是原始值，返回结果
+    - 否则，调用input.toString()。如果结果是原始值，返回结果
+    - 否则，抛出错误
+  3. 如果转换的类型是String:上述步骤2，3交换；先执行toString()，后valueOf()
+
+-----
+
+## 作用域
+## *全局作用域*
+  1. 所有 window 对象的属性拥有全局作用域，全局作用域会污染全局命名空间，引起起名冲突所以 jquery 等库会把所有代码放在自执行函数中，防止变量泄漏污染
+## *函数作用域*
+  1. 函数作用域是指声明在函数内部的变量，和全局作用域相反，局部作用域一般只在固定的代码片段内部可访问
+
+-----
+
+## DOM API
+### *queueMicrotask*
+  ```js
+    // 手写Promise中有使用这个，不知道源码是不是也是用的这个
+    queueMicrotask(() => {/* ... */});
+  ```
+  1. Window 或 Worker 接口的 queueMicrotask() 方法，将微任务加入队列以在控制返回浏览器的事件循环之前的安全时间执行
+  2. 参数：回调函数,当浏览器引擎确定可以安全调用你的代码时执行的 function
+  3. 微任务（microtask）的执行顺序在所有进行中的任务（pending task）完成之后，在对浏览器的事件循环产生控制（yielding control to the browser's event loop）之前
+  4. 返回值:无
+
+-----
 
 ## git命令
   - git clone

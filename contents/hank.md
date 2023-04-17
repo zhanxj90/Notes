@@ -1,22 +1,20 @@
 # 前端兼容处理
   > 虽然你不一定用的上，一些低版本浏览器甚至都不存在了，但是这个知识还是需要了解的
 
-
 ## html兼容
-
 ### 时间格式兼容
   - iso系统上不支持-连接符格式的时间字符串（eg：YYYY-MM-DD）；这类字符串转换成时间显示‘Invalid Date’
 
+-----
 
 ## css兼容
-
 ### 表单样式
   - autofocus：支持的浏览器有 Firefox 4+、Safari 5+、Chrome 和 Opera 
   9.6；不支持的可以使用focus方法通过js获取
 
+-----
 
 ## js兼容
-
 ### 表单方法
   - 选择全部文本：
     ``` js
@@ -47,7 +45,6 @@
       textbox.focus();
     }
     ```
-
 ### ajax技术
   - 创建XMLHttpRequest对象
   ``` js
@@ -94,3 +91,5 @@
     return xhr; 
   }
   ```
+
+-----

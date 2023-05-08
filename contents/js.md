@@ -259,8 +259,36 @@
   2. 参数：回调函数,当浏览器引擎确定可以安全调用你的代码时执行的 function
   3. 微任务（microtask）的执行顺序在所有进行中的任务（pending task）完成之后，在对浏览器的事件循环产生控制（yielding control to the browser's event loop）之前
   4. 返回值:无
+### *IntersectionObserver*
+  ```js
+    // 建立观察者
+    let observer = new IntersectionObserver(
+      (entries) => {
+          entries.forEach((entry) => {
+              observer.unobserve(target)
+          })
+      },
+      // 观察监听配置
+      { 
+        // root: null, // 观察对象参照物，默认null，窗口视图
+        threshold: 1 // 和参照物的重叠范围，0-1
+      }
+    )
+    // 观察-可观察多个对象
+    observer.observe(dom)
+    // observer.observe(dom1)
+  ```
+  1. 异步观察目标元素与其祖先元素或顶级文档视口（viewport）交叉状态的方法。
+  2. entries:观察的对象中符合重叠条件的对象数组
+  3. observer.observe(dom):观察者添加观察对象，可以同时观察多个
+  4. 可用于替代列表中加载更多操作，消耗会比监听滚动事件小
+### *visibilitychange*
+  1. 当其选项卡的内容变得可见或被隐藏时，会在文档上触发(切换标签页会触发)
 
 -----
+
+GitHub Repositories: vscode插件，输入github远程地址，可以不用下载远程库直接访问
+
 
 ## git命令
   - git clone

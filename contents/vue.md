@@ -46,8 +46,54 @@
 
 -----
 
-##
-### **
+## Vue脚手架集合
+> vue搭配的脚手架有两个：Vue-cli和Vite。 Vue-cli是 Vue 2 默认官方脚手架工具;Vite 是Vue3之后发布的（Vue-cli也可用于Vue3）
+### *Vue-cli*
+  1. Vue-cli由来
+    - Vue-cli是 Vue 2 默认官方脚手架工具，Vue-cli 基于 Webpack 开发，是 Webpack 的超集
+  2. Vue-cli的特点
+    - Vue-cli基于 Webpack 构建，配置好了打包规则
+    - 内置热模块重载的开发服务器
+    - 有丰富的官方插件合集，站在 webpack 庞大的社区资源上
+    - 友好的图形化创建和管理 Vue 项目界面
+    - Vue-cli在服务启动之前，要把所有代码打包成 Bundle 再启动服务。这就是为什么启动一些大型项目时，特别慢的原因
+  3. Vue-cli获取env环境变量
+    - 配置.env.[mode]文件来配置环境变量(例：.env.develop 文件)
+    - 属性名必须以 VUE_APP_ 开头，如：VUE_APP_XXX
+    - 在js文件中用process.env来获取环境配置
+      ```js
+        const OLDURL = process.env.VUE_APP_OLD_URL
+      ```
+### *Vite*
+  1. vite由来
+    - Vite 是 Vue 团队开发的新一代前端开发与构建工具，Vite 不是基于 Webpack 开发的，他为了解决服务启动慢的问题，Vite 通过一开始将应用中的模块区分为依赖和源码两类，改进了开发服务器启动时间。
+  2. Vite模块化的划分
+    - 依赖：大多为在开发时不会变动的纯 JavaScript。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会存在多种模块化格式。Vite 会使用 esbuild 预构建依赖。esbuild 使用 Go 编写，并且比以 JavaScript 编写的打包器预构建依赖快 10-100 倍。
+    - 源码：通常包含一些并非直接是 JavaScript 的文件，需要转换，时常会被编辑。同时，并不是所有的源码都需要同时被加载（例如基于路由拆分的代码模块）。
+  3. Vite的特点
+    - 在开发过程中，Vite 是一个开发服务器，根据浏览器的要求编译源文件。无需捆绑，编译后真正做到按需使用。未修改的文件会返回304，所以浏览器根本就不会要求。这就是它启动快、保持快的原因。
+    - Vite 支持热模块替换，这和 "简单的重载页面 "有本质的区别，在DX（开发者体验）方面是天壤之别。Vue组件和CSS HMR是开箱即用的支持，第三方框架可以利用HMR API。
+    - Vite支持一些webpack启发的功能，比如从js中导入’.css’文件（a la css-loader），基于fs的相对路径引用资产（a la file-loader m在构建过程中只需指定’-base’就能自动处理最终的公共部署路径）。
+    - Vite通过esbuild支持.(t|j)sx?文件，开箱即用，速度快得惊人，所以即使是TS转码，HMR也是字面上的即时性。
+    - Vite使用Rollup进行生产构建，内部配置与开发服务器功能一致。生产构建的输出是一个传统的静态资产目录，可以部署在任何地方（并且可以被polyfilled以支持旧的borwsers）。
+    - Vite的核心也是可扩展的（配置/插件格式待定）–你可以通过添加Koa中间件（用于开发）+Rollup aplugin（用于构建）来添加对自定义文件转换的支持。
+  4. Vite获取env环境变量
+    - 配置.env.[mode]文件来配置环境变量(例：.env.develop 文件)
+    - 只有以 VITE_ 为前缀的变量才会暴露给经过 vite 处理的代码，如：VITE_APP_XXX
+    - 在js文件中用import.meta.env来获取环境配置
+      ```js
+        const OLDURL = import.meta.env.VUE_APP_OLD_URL
+      ```
+    - 默认的内建变量
+      * import.meta.env.MODE: {string} 应用运行的模式。
+      * import.meta.env.BASE_URL: {string} 部署应用时的基本 URL。他由base 配置项决定。
+      * import.meta.env.PROD: {boolean} 应用是否运行在生产环境。
+      * import.meta.env.DEV: {boolean} 应用是否运行在开发环境 (永远与import.meta.env.PROD相反)。
+### *Vite 和 Vue Cli 区别*
+  1. Vite 是基于原生 ES6 Modules，在生产环境下打包使用的是 Rollup
+  2. vue-cli 基于 webpack 封装，生产环境和开发环境都是基于 Webpack 打包。所以两者在生产环境下都是基于源代码文件打包
+  3. 但在开发环境中，两者有所不同。Vite 在开发环境下，基于原生 ES6 ，无需对代码进行打包，浏览器可以直接调用。所以 Vite 因为基于浏览器的原生功能，省掉了打包过程，在开发环境中体验及其愉快。
+  4. vite 与 webpack 两者定位不同。webpack 是一个纯打包工具，vite 是更上层的工具链解决方案，类似（webpack + web 常用配置 + webpack-dev-server
 
 -----
 

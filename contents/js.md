@@ -274,6 +274,8 @@
     - 十进制小数转换成二进制小数采用"乘2取整，顺序排列"法
     - 具体操作：用2乘十进制小数，得积，积的整数取出,小数部分继续乘以2，直到积中的小数部分为零或者达到所要求的精度为止；把先取出的整数部分作为最高位，其他按顺序排列起来。
 
+-----
+
 ## DOM API
 ### *queueMicrotask*
   ```js
@@ -309,6 +311,92 @@
   4. 可用于替代列表中加载更多操作，消耗会比监听滚动事件小
 ### *visibilitychange*
   1. 当其选项卡的内容变得可见或被隐藏时，会在文档上触发(切换标签页会触发)
+
+-----
+
+## new操作符
+## *具体流程*
+  1. 新生成了一个对象；
+  2. 链接到原型；
+  3. 绑定 this；
+  4. 返回新对象
+## *重写new方法*
+  ```js
+    function myNew(){
+      // 创建一个空的对象
+      let obj = new Object()
+      // 获得构造函数
+      let Con =[].shift.call(arguments)
+      // 链接到原型
+      obj.__proto__ = Con.prototype
+      // 绑定 this，执行构造函数
+      let result = Con.apply(obj, arguments)
+      // 确保 new 出来的是个对象
+      return typeof result ==='object'? result : obj
+    }
+  ```
+
+## 原型和原型链
+  1. 所有对象都是通过```nwe 函数```创建的，字面量对象也是通过内部调用new实现的
+    ```js
+      var obj = {} // obj = new Object()
+      var arr = [] // arr = new Array()
+    ```
+  2. 所有函数也都是对象，函数中可以有属性
+  3. 所有对象都是引用类型
+### *原型 prototype*
+  1. 所有函数都有一个属性：prototype，称之为函数原型（只有函数有，对象字面量及数组字面量没有）
+  2. 默认情况下，prototype是一个普通的object对象，
+  3. 默认情况下，prototype有个属性constructor，也是个对象，指向构造函数本身
+  ```js
+    var obj = {}
+    console.log(obj.prototype) // undefined
+    var fun = function(){}
+    console.log(fun.prototype) // {constructor: ƒ}
+    console.log(fun.prototype.constructor === fun) // true
+  ```
+### *隐式原型*
+  1. 所有对象都有一个属性：```__proto__```，称之为隐式原型（函数、数组也是对象，所以他们也有）
+  2. 隐式原型是系统内部变量，不要轻易访问（__开头的都是系统变量）
+  3. 默认情况下，隐式原型指向创建该对象的函数的原型（构造函数如果返回了对象，则指向的是该返回的原型，跟new原理有关）
+  ```js
+    var obj = {}
+    // true 字面量是调用new Object
+    console.log(obj.__proto__ === Object.prototype)
+    
+    var fun1 = function(){}
+    var obj1 = new fun1()
+    // true 构造函数fun未设置返回，默认返回其实是fun本身
+    console.log(obj1.__proto__ === fun1.prototype)
+
+    var fun2 = function(){
+      return {} // ==> return new Object()
+    }
+    var obj2 = new fun2()
+    // 因fun2有返回，所以obj2其实是返回对象的实例，不是fun2本身；var obj2 = new fun2() ==> var obj2 = new Object()
+    // false
+    console.log(obj2.__proto__ === fun2.prototype)
+    // true
+    console.log(obj2.__proto__ === Object.prototype)
+  ```
+## *原型链*
+  1. 对象属性成员的查找顺序：
+    - 看该对象自身是否拥有该成员，如果有直接使用
+    - 否则看该对象的隐式原型中是否拥有，如果有则使用
+    - 否则继续向上层隐式原型中查找，直到找到null
+  2. 这种逐级向上查询的链式调用就称之为原型链,原型链图示[/assets/1684748150729.jpg]
+  3. 特殊点：
+    - Function的__proto__指向自身的prototype
+    ```js
+      // Function是系统内置函数对象
+      Function.__proto__===Function.prototype
+    ```
+    - Object的__proto__指向Function.prototype（和Object.prototype不是同一个）
+    ```js
+      // Object是函数对象，Object.__proto__指向的是创建Object的函数的原型，创建Object的函数是Function
+      Object.__proto__===Function.prototype
+    ```
+    - Object的prototype的__proto__指向null
 
 -----
 

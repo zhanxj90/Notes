@@ -22,6 +22,12 @@
 ## [npm](./contents/npm.md)
   Node.js 的包管理工具，用来安装各种 Node.js 的扩展。
 
+## [skill](./contents/skill.md)
+  提高开发速率的一些插件及技巧。
+
+## [git](./contents/git.md)
+  一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。
+
 # 项目说明
   1. 文件目录结构
     - assets：图片资源目录

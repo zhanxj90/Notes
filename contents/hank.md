@@ -90,5 +90,22 @@
         return xhr; 
       }
       ```
+### *移动端弹出键盘时遮挡输入框*
+  1. 键盘显示后监听可视区域的变化
+      ```js
+      window.visualViewport.addEventListener('resize',this.setInputPosition)
+      
+      // 组件注销时记得移除监听
+      // window.visualViewport.removeEventListener('resize',this.setInputPosition)
+      ```
+  2. 监听事件中，将当前活跃的输入框显示在可视区中间
+      ```js
+      function setInputPosition(){
+        const activeElement = document.activeElement
+        if (activeElement && activeElement.tagName === 'INPUT'){
+          activeElement.scrollIntoView({ block: 'center' })
+        }
+      }
+      ```
 
 -----

@@ -22,11 +22,14 @@
 ## [npm](./contents/npm.md)
   Node.js 的包管理工具，用来安装各种 Node.js 的扩展。
 
-## [skill](./contents/skill.md)
+## [实战奇招](./contents/skill.md)
   提高开发速率的一些插件及技巧。
 
 ## [git](./contents/git.md)
   一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。
+
+## [前端体系](./contents/engineering.md)
+  有关前端开发思维的一些内容：模块化规范，webpack，设计模式...
 
 # 项目说明
   1. 文件目录结构

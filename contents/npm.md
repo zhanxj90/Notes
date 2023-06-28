@@ -48,6 +48,10 @@
       - 错误码：402
       - 关键词：must sign up for private package
       - 包名加了用户名称或者组织做前缀才出现的，用`npm publish --access public`发布
+  7. npm源安全域名报错
+      - 错误码：426
+      - 关键词：ERR! 426 Upgrade Required
+      - npm网站和npm registry必须使用TLS协议，npm源必须是https协议的
 
 -----
 

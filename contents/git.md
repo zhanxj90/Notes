@@ -10,6 +10,25 @@
   6. git commit
   7. git push
   8. git pull
+### *git设置命令*
+  1. 查看用户名，邮箱
+      ```shell
+      // 查看用户名
+      git config user.name
+
+      // 查看邮箱
+      git config user.email
+      ```
+  2. 修改用户名，邮箱
+      ```shell
+      // 修改当前仓库的用户名和邮箱
+      git config --local user.email "你的名字"
+      git config --local user.email "你的邮箱"
+
+      // 修改全局的用户名和邮箱
+      git config --global user.email "你的名字"
+      git config --global user.email "你的邮箱"
+      ```
 
 -----
 

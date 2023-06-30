@@ -58,3 +58,20 @@
       'types', // 类型修改
       'release', // 版本发布
       ```
+
+-----
+
+## github管理
+### *github clone*
+  1. https方式链接服务器
+      - 需要用户名+密码进行身份验证（密码已被访问令牌替代）
+      - 用户名和令牌可以保存在window凭据中，这样不用每次都需要登录
+      - 两种类型的 personal access token（令牌）
+        * fine-grained personal access token：细粒度个人访问令牌；更安全，详细权限需要勾选；但是只能用于单个用户或者组织
+        * Personal access tokens (classic) ：个人访问令牌（经典）；不太安全，无需详细配置；可用于多个用户或者组织（即用户和用户管理的组织 下的库都可用clone）
+  2. ssh方式链接服务器
+      - 本地生成ssh,生成的内容保存在```C:/Users/<username>/.ssh```
+          ```shell
+          $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+          ```
+      - 把.ssh下的id_rsa.pub (公钥)添加到github上

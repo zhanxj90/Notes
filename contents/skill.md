@@ -5,6 +5,8 @@
 ### *vscode插件*
   1. GitHub Repositories: 输入github远程地址，可以不用下载远程库直接访问 
   2. 
+### *npm包*
+  1. store.js：```npm i store```,跨浏览器的本地存储解决方案。
 
 -----
 

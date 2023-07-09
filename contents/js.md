@@ -18,7 +18,6 @@
   13. some()、
   14. every()— —判断数组
   15. reduce()— —叠加数组
-
 ### *rest 参数*
   1. ES6中引入rest参数(形式为'...变量名')，用于获取函数的多余参数
   2. rest参数是真正意义上的数组，可以使用数组的任何方法
@@ -40,14 +39,14 @@
   1. Promise对象的状态不受外界影响,有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。
   2. Promise一旦状态改变，就不会再变，任何时候都可以得到这个结果。
   3. 解决了回调地狱（异步方法中callback函数嵌套其他异步，一层一层的）的问题
-### *成功回调（resolve,then)*
+### *成功回调（resolve,then）*
   1. 
-### *失败回调（reject,catch)*
+### *失败回调（reject,catch）*
   1. 
 ### *all的使用*
   1. all方法是在Promise类上的，通过Promise.all使用。all接收一个数组参数(参数不一定是要promise，有返回就有值),数组全执行完才返回，有一个错了就走catch，全对才走then
 ### *race的使用*
-  - race方法是在Promise类上的，通过Promise.race使用。也是接收数组（同all），数组有个执行完了立马返回，对就then，错就catch。
+  1. race方法是在Promise类上的，通过Promise.race使用。也是接收数组（同all），数组有个执行完了立马返回，对就then，错就catch。
 ### *手写Promise*
   ```js
     // 先定义三个常量表示状态
@@ -221,23 +220,23 @@
 ### *比较运算符*
   1. 全等和不全等——仅比较而不转换（===）;类型不同即返回false
   2. 相等和不相等——先转换再比较（==）
-    - 如果操作数有运算符处理（比如自增，加减，取反等），可能要根据运算符优先级，先把操作数的前置运算都做完先（如：a==!b,要先!b取反）
-    - 特殊比较：不能将null 和 undefined 转换成其他任何值(null==0和null==1都是false),null 和undefined 是相等的
-    - 如果有一个操作数是NaN，则相等操作符返回 false ，而不相等操作符返回 true。即使两个操作数都是NaN，相等操作符也返回 false；因为按照规则， NaN 不等于 NaN
-    - 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值——false转换为0，而true转换为1
-    - 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值
-    - 如果一个操作数是对象，另一个操作数是基本类型，则调用toPrimitive把对象转换成基本类型，用得到的基本类型值按照前面的规则进行比较
-    - 如果两个操作数都是对象，则比较它们是不是同一个对象，如果两个操作数都指向同一个对象，则相等操作符返回 true；否则， 返回false
-    - 如果是字符串，就通过 unicode 字符索引来比较
-  比较运算图示：[/assets/比较运算符.png]
+      - 如果操作数有运算符处理（比如自增，加减，取反等），可能要根据运算符优先级，先把操作数的前置运算都做完先（如：a==!b,要先!b取反）
+      - 特殊比较：不能将null 和 undefined 转换成其他任何值(null==0和null==1都是false),null 和undefined 是相等的
+      - 如果有一个操作数是NaN，则相等操作符返回 false ，而不相等操作符返回 true。即使两个操作数都是NaN，相等操作符也返回 false；因为按照规则， NaN 不等于 NaN
+      - 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值——false转换为0，而true转换为1
+      - 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值
+      - 如果一个操作数是对象，另一个操作数是基本类型，则调用toPrimitive把对象转换成基本类型，用得到的基本类型值按照前面的规则进行比较
+      - 如果两个操作数都是对象，则比较它们是不是同一个对象，如果两个操作数都指向同一个对象，则相等操作符返回 true；否则， 返回false
+      - 如果是字符串，就通过 unicode 字符索引来比较 
+      - 比较运算图示：![](/assets/比较运算符.png)
 ### *toPrimitive*
-> toPrimitive(input,preferedType?),内部函数,将对象转换成原始值;input是输入的值，preferedType是期望转换的类型(字符串或数字)
+  > toPrimitive(input,preferedType?),内部函数,将对象转换成原始值;input是输入的值，preferedType是期望转换的类型(字符串或数字)
   1. preferedType可省略，日期会被认为是字符串，而其他的值会被当做Number
   2. 如果转换的类型是number:
-    - input是原始值，直接返回这个值
-    - 否则，如果input是对象，调用input.valueOf()，如果结果是原始值，返回结果
-    - 否则，调用input.toString()。如果结果是原始值，返回结果
-    - 否则，抛出错误
+      - input是原始值，直接返回这个值
+      - 否则，如果input是对象，调用input.valueOf()，如果结果是原始值，返回结果
+      - 否则，调用input.toString()。如果结果是原始值，返回结果
+      - 否则，抛出错误
   3. 如果转换的类型是String:上述步骤2，3交换；先执行toString()，后valueOf()
 
 -----
@@ -251,7 +250,7 @@
 -----
 
 ## 求余和求模
-> 求余和求模都是计算机编程中的一种获取余数的方法，差别在于具体取整的不同（主要是负数），js中只有求余
+  > 求余和求模都是计算机编程中的一种获取余数的方法，差别在于具体取整的不同（主要是负数），js中只有求余
 ### *求余(rem)*
   1. js中使用 % 求余
   2. x对y求余：x rem y = x - fix(x/y) * y
@@ -268,11 +267,11 @@
 ## 进制转换
 ### *十进制转二进制*
   1. 整数转换
-    - 十进制整数转换为二进制整数采用"除2取余，逆序排列"法
-    - 具体操作：用2整除十进制整数,得余数和商，接着继续用2整除商，直到余数小于2;把先得到的余数作为个位，依次排列
+      - 十进制整数转换为二进制整数采用"除2取余，逆序排列"法
+      - 具体操作：用2整除十进制整数,得余数和商，接着继续用2整除商，直到余数小于2;把先得到的余数作为个位，依次排列
   2. 小数转换
-    - 十进制小数转换成二进制小数采用"乘2取整，顺序排列"法
-    - 具体操作：用2乘十进制小数，得积，积的整数取出,小数部分继续乘以2，直到积中的小数部分为零或者达到所要求的精度为止；把先取出的整数部分作为最高位，其他按顺序排列起来。
+      - 十进制小数转换成二进制小数采用"乘2取整，顺序排列"法
+      - 具体操作：用2乘十进制小数，得积，积的整数取出,小数部分继续乘以2，直到积中的小数部分为零或者达到所要求的精度为止；把先取出的整数部分作为最高位，其他按顺序排列起来。
 
 -----
 
@@ -338,82 +337,68 @@
 
 ## 原型和原型链
   1. 所有对象都是通过```nwe 函数```创建的，字面量对象也是通过内部调用new实现的
-    ```js
+      ```js
       var obj = {} // obj = new Object()
       var arr = [] // arr = new Array()
-    ```
+      ```
   2. 所有函数也都是对象，函数中可以有属性
   3. 所有对象都是引用类型
+  4. 实例没有prototype属性，只有__proto__。构造函数两者都有
 ### *原型 prototype*
   1. 所有函数都有一个属性：prototype，称之为函数原型（只有函数有，对象字面量及数组字面量没有）
   2. 默认情况下，prototype是一个普通的object对象，
   3. 默认情况下，prototype有个属性constructor，也是个对象，指向构造函数本身
-  ```js
-    var obj = {}
-    console.log(obj.prototype) // undefined
-    var fun = function(){}
-    console.log(fun.prototype) // {constructor: ƒ}
-    console.log(fun.prototype.constructor === fun) // true
-  ```
+      ```js
+      var obj = {}
+      console.log(obj.prototype) // undefined
+      var fun = function(){}
+      console.log(fun.prototype) // {constructor: ƒ}
+      console.log(fun.prototype.constructor === fun) // true
+      ```
 ### *隐式原型*
-  1. 所有对象都有一个属性：```__proto__```，称之为隐式原型（函数、数组也是对象，所以他们也有）
+  1. 所有对象都有一个属性：`__proto__`，称之为隐式原型（函数、数组也是对象，所以他们也有）
   2. 隐式原型是系统内部变量，不要轻易访问（__开头的都是系统变量）
   3. 默认情况下，隐式原型指向创建该对象的函数的原型（构造函数如果返回了对象，则指向的是该返回的原型，跟new原理有关）
-  ```js
-    var obj = {}
-    // true 字面量是调用new Object
-    console.log(obj.__proto__ === Object.prototype)
-    
-    var fun1 = function(){}
-    var obj1 = new fun1()
-    // true 构造函数fun未设置返回，默认返回其实是fun本身
-    console.log(obj1.__proto__ === fun1.prototype)
+      ```js
+      var obj = {}
+      // true 字面量是调用new Object
+      console.log(obj.__proto__ === Object.prototype)
+      
+      var fun1 = function(){}
+      var obj1 = new fun1()
+      // true 构造函数fun未设置返回，默认返回其实是fun本身
+      console.log(obj1.__proto__ === fun1.prototype)
 
-    var fun2 = function(){
-      return {} // ==> return new Object()
-    }
-    var obj2 = new fun2()
-    // 因fun2有返回，所以obj2其实是返回对象的实例，不是fun2本身；var obj2 = new fun2() ==> var obj2 = new Object()
-    // false
-    console.log(obj2.__proto__ === fun2.prototype)
-    // true
-    console.log(obj2.__proto__ === Object.prototype)
-  ```
+      var fun2 = function(){
+        return {} // ==> return new Object()
+      }
+      var obj2 = new fun2()
+      // 因fun2有返回，所以obj2其实是返回对象的实例，不是fun2本身；var obj2 = new fun2() ==> var obj2 = new Object()
+      // false
+      console.log(obj2.__proto__ === fun2.prototype)
+      // true
+      console.log(obj2.__proto__ === Object.prototype)
+      ```
 ## *原型链*
   1. 对象属性成员的查找顺序：
-    - 看该对象自身是否拥有该成员，如果有直接使用
-    - 否则看该对象的隐式原型中是否拥有，如果有则使用
-    - 否则继续向上层隐式原型中查找，直到找到null
-  2. 这种逐级向上查询的链式调用就称之为原型链,原型链图示[/assets/1684748150729.jpg]
+      - 看该对象自身是否拥有该成员，如果有直接使用
+      - 否则看该对象的隐式原型中是否拥有，如果有则使用
+      - 否则继续向上层隐式原型中查找，直到找到null
+  2. 这种逐级向上查询的链式调用就称之为原型链,原型链图示![](/assets/1684748150729.jpg)
   3. 特殊点：
-    - Function的__proto__指向自身的prototype
-    ```js
-      // Function是系统内置函数对象
-      Function.__proto__===Function.prototype
-    ```
-    - Object的__proto__指向Function.prototype（和Object.prototype不是同一个）
-    ```js
-      // Object是函数对象，Object.__proto__指向的是创建Object的函数的原型，创建Object的函数是Function
-      Object.__proto__===Function.prototype
-    ```
-    - Object的prototype的__proto__指向null
+      - Function的__proto__指向自身的prototype
+        ```js
+        // Function是系统内置函数对象
+        Function.__proto__===Function.prototype
+        ```
+      - Object的__proto__指向Function.prototype（和Object.prototype不是同一个）
+        ```js
+        // Object是函数对象，Object.__proto__指向的是创建Object的函数的原型，创建Object的函数是Function
+        Object.__proto__===Function.prototype
+        ```
+      - Object的prototype的__proto__指向null
 
 -----
-
-GitHub Repositories: vscode插件，输入github远程地址，可以不用下载远程库直接访问
-
-
-## git命令
-  - git clone
-  - git branch
-  - git remote prune origin
-  - git add
-  - git status
-  - git commit
-  - git push
-  - git pull
-
-  实例没有prototype属性，只有__proto__。构造函数两者都有
 
 
 git命令操作

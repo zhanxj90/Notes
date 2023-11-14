@@ -4,7 +4,9 @@
 ## 插件
 ### *vscode插件*
   1. GitHub Repositories: 输入github远程地址，可以不用下载远程库直接访问 
-  2. 
+  2. Indent-Rainbow: 自动标红没有对齐的代码行
+  3. Trailing Spaces: 高亮提示代码中冗余的空格，并可以快速删掉
+  4. Bracket Pair Colorizer: 为代码中的各种结对的括号提供了颜色高亮等功能，增强代码阅读性
 ### *npm包*
   1. store.js：```npm i store```,跨浏览器的本地存储解决方案。
 

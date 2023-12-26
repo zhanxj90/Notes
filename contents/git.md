@@ -75,3 +75,21 @@
           $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
           ```
       - 把.ssh下的id_rsa.pub (公钥)添加到github上
+### *多个git网站共存*
+  1. 问题描述
+      - 一个电脑要拉取两个不同git网站的代码库时，要怎么操作；例如：公司代码库在gitlab上，自己的项目在github上
+  2. 问题点
+      - 邮箱不同名时，ssh也会不一样，如何都使用ssh方式授权
+      - HTTP授权（window凭证方式），如何处理github上有自己仓库和组织仓库的问题，
+  3. 解决方案
+      - 都使用ssh授权
+        * 生成ssh key时修改成不同的名称，github的就叫id_rsa_github，gitee的就叫id_rsa_gitee。
+        * 这样就可以使用不同的邮箱了，把这几个文件拷贝到当前用户的home目录下的.ssh中（比如/home/ubuntu/.ssh或者C:\Users\hynev\.ssh）
+        * 写一个config配置文件用来映射不同的Git服务器与SSH Key文件。config配置文件没有后缀。
+        * config文件图示![](/assets/80cb39dbb6fd5266ab306099e293382dd50736b1.webp)
+        * Host和HostName填git服务器的域名；User分别填在这两个服务器上的邮箱；PreferredAuthentications publickey是固定写法；IdentityFile则分别填对应的公钥文件名称
+        * 把私钥文件添加到SSH-Agent中。命令如下：ssh-add id_rsa_github以及ssh-add id_rsa_gitee。如果出现错误，先执行eval $(ssh-agent)，再执行ssh-add命令即可。
+      - 都使用http授权
+        * 各配置各的，互不冲突。
+        * 需要注意的一点是，有自己仓库和组织仓库共存时，不能使用细粒度个人访问令牌，必须要用个人访问令牌
+      - 一个使用ssh授权，一个使用http授权

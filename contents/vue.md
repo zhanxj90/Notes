@@ -83,7 +83,7 @@
       - 只有以 VITE_ 为前缀的变量才会暴露给经过 vite 处理的代码，如：VITE_APP_XXX
       - 在js文件中用import.meta.env来获取环境配置
         ```js
-        const OLDURL = import.meta.env.VUE_APP_OLD_URL
+        const OLDURL = import.meta.env.VITE_APP_OLD_URL
         ```
       - 默认的内建变量
         * import.meta.env.MODE: {string} 应用运行的模式。
@@ -98,8 +98,40 @@
 
 -----
 
-##
-### **
+## 指令
+### *常用内部指令*
+  1. v-model:双向绑定数据
+  2. v-bind:缩写（:），绑定动态数据
+  3. v-on:缩写（@），绑定事件
+  4. v-if、v-else:条件判断
+  5. v-for:循环遍历
+  6. v-text、v-html:绑定文本节点，v-htm会解析成一段dom节点
+  7. v-clock:配合css（[v-clock]{display:none;}）使用；后续步骤未完成时，用于隐藏未渲染的节点,解决网速慢出现{{xx}}的问题
+### *自定义指令*
+  1. 指令类型
+    - 全局自定义指令:Vue.directive('color',{bind(el,obj,vnode,oldVnode){ } })
+    - 局部自定义指令:组件中定义；directives:{color:{bind(el,obj,vnode,oldVnode){} } }；与全局指令重名时只会运行局部指令。
+  2. 指令参数
+    - 第一个参数为指令名，使用时以v-开头（v-color)
+    - 第二个参数为对象或函数，为对象时其中可以包含多个钩子函数
+### *指令钩子函数*
+  1. 生命周期
+    - bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+    - inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+    - update：所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新（绑定在此函数中指令会跟随数据变化而动态变化）。
+    - componentUpdated：指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+    - unbind：只调用一次，指令与元素解绑时调用（通常如果指令中监听了事件，需要在这个钩子中取消监听）。
+  2. 函数参数
+    - el：指令所绑定的元素，可以用来直接操作 DOM。
+    - binding：一个对象，包含以下 property：
+      * name：指令名，不包括 v- 前缀。
+      * value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+      * oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+      * expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+      * arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+      * modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
+    - vnode：Vue 编译生成的虚拟节点，可以通过vnode.context拿到当前组件的实例（全局组件则拿到vue实例对象）。
+    - oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
 -----
 

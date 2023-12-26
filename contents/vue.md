@@ -135,8 +135,53 @@
 
 -----
 
-##
-### **
+## css scoped
+### *scoped的用途和原理*
+  1. 用途：防止全局同名CSS污染，vue组件中添加了该属性的样式表只会作用于当前组件
+  2. 原理：在元素上添加唯一的属性（data-v-x形式），css编译后也会加上属性选择器[data-v-x]，以此完成类似作用域的选择方式
+  3. 注意事项：
+    - scoped只在每个选择器的最后一个元素加属性选择器
+    - 有子组件的情况下，子组件html元素只有最外层会加属性，所以父组件写的css作用不到子组件内部元素
+    ```css
+    .parent {
+      color: red;
+      .child {
+        font-size: 30px;
+      }
+    }
+    //编译后
+    .parent[data-v-334455] {
+      color: red;
+    }
+    .parent .child[data-v-334455] {
+      font-size: 30px;
+    }
+    ```
+### *穿透CSS*
+  1. 用途：解决上述添加了scoped之后，无法在父组件中修改子组件样式问题；
+  2. 写法： 深度选择器，/deep/或者>>>，（例：/deep/ .child{}）
+  3. 原理：只在加了/deep/的元素加属性选择器,不会加在选择器的最后一个元素上，这样子组件内部元素也能匹配到样式
+  ```css
+    /deep/ .parent {
+      color: red;
+      .child {
+        font-size: 30px;
+        p{
+          font-size: 40px;
+        }
+      }
+    }
+    //编译后
+    .parent[data-v-334455] {
+      color: red;
+    }
+    .parent[data-v-334455] .child {
+      font-size: 30px;
+    }
+    .parent[data-v-334455] .child p {
+      font-size: 40px;
+    }
+    ```
 
 -----
 

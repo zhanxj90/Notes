@@ -284,6 +284,16 @@
         console.log("连接已关闭.");
       }
     ```
+  5. WebSocket心跳机制
+    - 原理：利用心跳包及时发送和接收数据，保证WebSocket长连接不被断开。（即：客户端和服务器之间定时发送空数据包检测连接状态或停止无通信时的长连接）
+    - 心跳包：WebSocket协议的保活机制，用于维持长连接。心跳包是指在一定时间间隔内，WebSocket发送的空数据包
+    - 作用：
+      * 保持WebSocket连接不被断开。
+      * 检测WebSocket连接状态，及时处理异常情况。
+      * 减少WebSocket连接及服务器资源的消耗。
+    - 前端实现：
+      * 使用setInterval定时发送心跳包。
+      * 在前端监听到WebSocket的onclose()事件时，重新创建WebSocket连接。
 ### *Web Worker*
   1. Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行
   2. 优点：实现多线程环境，摆脱了js的单线程

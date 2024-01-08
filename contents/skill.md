@@ -9,6 +9,24 @@
   4. Bracket Pair Colorizer: 为代码中的各种结对的括号提供了颜色高亮等功能，增强代码阅读性
 ### *npm包*
   1. store.js：```npm i store```,跨浏览器的本地存储解决方案。
+### *webpack插件*
+  1. clean-webpack-plugin:快速更新打包文件，自动清除打包目录旧文件
+  2. html-webpack-plugin:自动生成html文件
+  3. copy-webpack-plugin:复制静态文件到打包目录里
+### *webpack内置插件*
+  1. DefinePlugin：全局常量定义
+    ```js
+      const webpack=require('webpack')
+      module.exports={
+        plugins:{
+          new webpack.DefinePlugin({
+            // 常量值必须是字符串，字符串的值就是常量的值
+            PI:`Math.PI`
+            DOMAIN:JSON.stringify("baidu.com")
+          })
+        }
+      }
+    ```
 
 -----
 

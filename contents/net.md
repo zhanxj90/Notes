@@ -176,61 +176,61 @@
   3. 缺点：延迟性高，请求中有大半是无用，非常消耗带宽和服务器资源，影响性能
   4. 应用： 二维码扫码确认、信息通知
   5. 实现方式：借用定时器实现短轮询
-    ```js
-      created(){
-        this.shortPolling = setInterval(function(){
-            that.getRuset()
-        },5000)
-      },
-      methods:{
-        getResult(){
-          var that = this
-          this.$axios('xxx,',post).then(res=>{
-            if(res.code === 200){//拿到想要的结果
-              ...
-              //定时器是否清除由业务场景决定
-              clearInterval(this.shortPolling)
-            }
-          })
-        }
-      }
-    ```
-### *comet*
-> 服务器推送技术(Server Push),别名叫Comet(彗星）
-  1. 长轮询
-    - 优点：兼容性好，在无消息的情况下不会频繁的请求，资源浪费较小
-    - 缺点：服务器hold连接会消耗资源，返回数据顺序无保证，难于管理维护
-    - 应用： webQQ、开心网、校内，Hi网页版、Facebook IM等等
-    - 实现方式：
-      * 基于 AJAX 的长轮询（long-polling）方式
-      * 主要由后端hold住连接，我们就是正常的发送请求即可
-      * 务器端会阻塞请求直到有数据传递或超时才返回,客户端会在处理完后，再次发出请求，重新建立连接。
-      * 短轮询是在客户端设置定时器，长轮询相当于是在服务端设置定时器
-  2. 长连接
-    - 优点：兼容性好，消息即时到达，不发无用请求
-    - 缺点：服务器维护长连接消耗资源
-    - 应用： Gmail聊天
-    - 实现方式：
-      * 基于 Iframe 及 htmlfile 的流（streaming）方式
-      * 在页面里嵌入一个隐蔵iframe，将这个隐蔵iframe的src属性设为对一个长连接的请求或是采用xhr请求，服务器端就能源源不断地往客户端输入数据。 
       ```js
-        //在vue中嵌入iframe
-        <iframe ref="iframe" v-show="iframeShow"></iframe>
-
-        watchIframe(){
-          //先找到iframe的窗口
-          this.iframeWin = this.$refs.iframe.contentWindow;
-          //向iframe发送信息,大括号内是发送的内容;
-          this.iframeWin.postMessage({ },"*");
-          //怎样监听iframe传过来的信息
-          window.addEventListener("message", this.handleMessage);
-          //获取iframe传过来的信息
-          handleMessage(res){
-            //res为传过来的信息
-            ...//渲染页面
+        created(){
+          this.shortPolling = setInterval(function(){
+              that.getRuset()
+          },5000)
+        },
+        methods:{
+          getResult(){
+            var that = this
+            this.$axios('xxx,',post).then(res=>{
+              if(res.code === 200){//拿到想要的结果
+                ...
+                //定时器是否清除由业务场景决定
+                clearInterval(this.shortPolling)
+              }
+            })
           }
         }
       ```
+### *comet*
+> 服务器推送技术(Server Push),别名叫Comet(彗星）
+  1. 长轮询
+      - 优点：兼容性好，在无消息的情况下不会频繁的请求，资源浪费较小
+      - 缺点：服务器hold连接会消耗资源，返回数据顺序无保证，难于管理维护
+      - 应用： webQQ、开心网、校内，Hi网页版、Facebook IM等等
+      - 实现方式：
+        * 基于 AJAX 的长轮询（long-polling）方式
+        * 主要由后端hold住连接，我们就是正常的发送请求即可
+        * 务器端会阻塞请求直到有数据传递或超时才返回,客户端会在处理完后，再次发出请求，重新建立连接。
+        * 短轮询是在客户端设置定时器，长轮询相当于是在服务端设置定时器
+  2. 长连接
+      - 优点：兼容性好，消息即时到达，不发无用请求
+      - 缺点：服务器维护长连接消耗资源
+      - 应用： Gmail聊天
+      - 实现方式：
+        * 基于 Iframe 及 htmlfile 的流（streaming）方式
+        * 在页面里嵌入一个隐蔵iframe，将这个隐蔵iframe的src属性设为对一个长连接的请求或是采用xhr请求，服务器端就能源源不断地往客户端输入数据。 
+        ```js
+          //在vue中嵌入iframe
+          <iframe ref="iframe" v-show="iframeShow"></iframe>
+
+          watchIframe(){
+            //先找到iframe的窗口
+            this.iframeWin = this.$refs.iframe.contentWindow;
+            //向iframe发送信息,大括号内是发送的内容;
+            this.iframeWin.postMessage({ },"*");
+            //怎样监听iframe传过来的信息
+            window.addEventListener("message", this.handleMessage);
+            //获取iframe传过来的信息
+            handleMessage(res){
+              //res为传过来的信息
+              ...//渲染页面
+            }
+          }
+        ```
 ### *SSE*
   1. SSE（Server-Sent Event，服务端推送事件）是一种允许服务端向客户端推送新数据的HTML5技术
   2. 优点：基于HTTP而生，因此不需要太多改造就能使用，使用方便，而websocket非常复杂，必须借助成熟的库或框架

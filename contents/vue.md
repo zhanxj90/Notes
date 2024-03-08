@@ -109,29 +109,29 @@
   7. v-clock:配合css（[v-clock]{display:none;}）使用；后续步骤未完成时，用于隐藏未渲染的节点,解决网速慢出现{{xx}}的问题
 ### *自定义指令*
   1. 指令类型
-    - 全局自定义指令:Vue.directive('color',{bind(el,obj,vnode,oldVnode){ } })
-    - 局部自定义指令:组件中定义；directives:{color:{bind(el,obj,vnode,oldVnode){} } }；与全局指令重名时只会运行局部指令。
+      - 全局自定义指令:Vue.directive('color',{bind(el,obj,vnode,oldVnode){ } })
+      - 局部自定义指令:组件中定义；directives:{color:{bind(el,obj,vnode,oldVnode){} } }；与全局指令重名时只会运行局部指令。
   2. 指令参数
-    - 第一个参数为指令名，使用时以v-开头（v-color)
-    - 第二个参数为对象或函数，为对象时其中可以包含多个钩子函数
+      - 第一个参数为指令名，使用时以v-开头（v-color)
+      - 第二个参数为对象或函数，为对象时其中可以包含多个钩子函数
 ### *指令钩子函数*
   1. 生命周期
-    - bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
-    - inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
-    - update：所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新（绑定在此函数中指令会跟随数据变化而动态变化）。
-    - componentUpdated：指令所在组件的 VNode 及其子 VNode 全部更新后调用。
-    - unbind：只调用一次，指令与元素解绑时调用（通常如果指令中监听了事件，需要在这个钩子中取消监听）。
+      - bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+      - inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+      - update：所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新（绑定在此函数中指令会跟随数据变化而动态变化）。
+      - componentUpdated：指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+      - unbind：只调用一次，指令与元素解绑时调用（通常如果指令中监听了事件，需要在这个钩子中取消监听）。
   2. 函数参数
-    - el：指令所绑定的元素，可以用来直接操作 DOM。
-    - binding：一个对象，包含以下 property：
-      * name：指令名，不包括 v- 前缀。
-      * value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
-      * oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
-      * expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
-      * arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
-      * modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
-    - vnode：Vue 编译生成的虚拟节点，可以通过vnode.context拿到当前组件的实例（全局组件则拿到vue实例对象）。
-    - oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
+      - el：指令所绑定的元素，可以用来直接操作 DOM。
+      - binding：一个对象，包含以下 property：
+        * name：指令名，不包括 v- 前缀。
+        * value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+        * oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+        * expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+        * arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+        * modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
+      - vnode：Vue 编译生成的虚拟节点，可以通过vnode.context拿到当前组件的实例（全局组件则拿到vue实例对象）。
+      - oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
 -----
 
@@ -140,47 +140,47 @@
   1. 用途：防止全局同名CSS污染，vue组件中添加了该属性的样式表只会作用于当前组件
   2. 原理：在元素上添加唯一的属性（data-v-x形式），css编译后也会加上属性选择器[data-v-x]，以此完成类似作用域的选择方式
   3. 注意事项：
-    - scoped只在每个选择器的最后一个元素加属性选择器
-    - 有子组件的情况下，子组件html元素只有最外层会加属性，所以父组件写的css作用不到子组件内部元素
-    ```css
-    .parent {
-      color: red;
-      .child {
-        font-size: 30px;
-      }
-    }
-    //编译后
-    .parent[data-v-334455] {
-      color: red;
-    }
-    .parent .child[data-v-334455] {
-      font-size: 30px;
-    }
-    ```
+      - scoped只在每个选择器的最后一个元素加属性选择器
+      - 有子组件的情况下，子组件html元素只有最外层会加属性，所以父组件写的css作用不到子组件内部元素
+        ```css
+        .parent {
+          color: red;
+          .child {
+            font-size: 30px;
+          }
+        }
+        //编译后
+        .parent[data-v-334455] {
+          color: red;
+        }
+        .parent .child[data-v-334455] {
+          font-size: 30px;
+        }
+        ```
 ### *穿透CSS*
   1. 用途：解决上述添加了scoped之后，无法在父组件中修改子组件样式问题；
   2. 写法： 深度选择器，/deep/或者>>>，（例：/deep/ .child{}）
   3. 原理：只在加了/deep/的元素加属性选择器,不会加在选择器的最后一个元素上，这样子组件内部元素也能匹配到样式
-  ```css
-    /deep/ .parent {
-      color: red;
-      .child {
-        font-size: 30px;
-        p{
-          font-size: 40px;
+    ```css
+      /deep/ .parent {
+        color: red;
+        .child {
+          font-size: 30px;
+          p{
+            font-size: 40px;
+          }
         }
       }
-    }
-    //编译后
-    .parent[data-v-334455] {
-      color: red;
-    }
-    .parent[data-v-334455] .child {
-      font-size: 30px;
-    }
-    .parent[data-v-334455] .child p {
-      font-size: 40px;
-    }
+      //编译后
+      .parent[data-v-334455] {
+        color: red;
+      }
+      .parent[data-v-334455] .child {
+        font-size: 30px;
+      }
+      .parent[data-v-334455] .child p {
+        font-size: 40px;
+      }
     ```
 
 -----

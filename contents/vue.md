@@ -161,27 +161,27 @@
   1. 用途：解决上述添加了scoped之后，无法在父组件中修改子组件样式问题；
   2. 写法： 深度选择器，/deep/或者>>>，（例：/deep/ .child{}）
   3. 原理：只在加了/deep/的元素加属性选择器,不会加在选择器的最后一个元素上，这样子组件内部元素也能匹配到样式
-    ```css
-      /deep/ .parent {
-        color: red;
-        .child {
-          font-size: 30px;
-          p{
-            font-size: 40px;
+      ```css
+        /deep/ .parent {
+          color: red;
+          .child {
+            font-size: 30px;
+            p{
+              font-size: 40px;
+            }
           }
         }
-      }
-      //编译后
-      .parent[data-v-334455] {
-        color: red;
-      }
-      .parent[data-v-334455] .child {
-        font-size: 30px;
-      }
-      .parent[data-v-334455] .child p {
-        font-size: 40px;
-      }
-    ```
+        //编译后
+        .parent[data-v-334455] {
+          color: red;
+        }
+        .parent[data-v-334455] .child {
+          font-size: 30px;
+        }
+        .parent[data-v-334455] .child p {
+          font-size: 40px;
+        }
+      ```
 
 -----
 

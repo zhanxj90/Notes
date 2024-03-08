@@ -236,63 +236,63 @@
   2. 优点：基于HTTP而生，因此不需要太多改造就能使用，使用方便，而websocket非常复杂，必须借助成熟的库或框架
   3. 缺点：基于文本传输效率没有websocket高，不是严格的双向通信，客户端向服务端发送请求无法复用之前的连接，需要重新发出独立的请求，并且不兼容IE
   4. 实现方式：Server-Sent Events也可以自定义事件
-    ```js
-      var source = new EventSource(url);
-      source.addEventListener('open', function (event) {
-        // ...
-      }, false);
-      //客户端收到服务器发来的数据，就会触发message事件，可以在onmessage属性的回调函数。
-      source.addEventListener('message', function (event) {
-        var data = event.data;
-        // handle message
-      }, false);
+      ```js
+        var source = new EventSource(url);
+        source.addEventListener('open', function (event) {
+          // ...
+        }, false);
+        //客户端收到服务器发来的数据，就会触发message事件，可以在onmessage属性的回调函数。
+        source.addEventListener('message', function (event) {
+          var data = event.data;
+          // handle message
+        }, false);
 
-      //如果发生通信错误（比如连接中断），就会触发error事件，可以在onerror属性定义回调函数。
-      source.addEventListener('error', function (event) {
-        // handle error event
-      }, false);
+        //如果发生通信错误（比如连接中断），就会触发error事件，可以在onerror属性定义回调函数。
+        source.addEventListener('error', function (event) {
+          // handle error event
+        }, false);
 
-      //close方法用于关闭 SSE 连接。
-      source.close();
-    ```
+        //close方法用于关闭 SSE 连接。
+        source.close();
+      ```
 ### *Websocket*
   1. Websocket是一个全新的、独立的协议，基于TCP协议，与http协议兼容、却不会融入http协议，仅仅作为html5的一部分，其作用就是在服务器和客户端之间建立实时的双向通信。
   2. 优点：真正意义上的实时双向通信，性能好，低延迟
   3. 缺点：独立与http的协议，因此需要额外的项目改造，使用复杂度高，必须引入成熟的库，无法兼容低版本浏览器
   4. 实现方式：Server-Sent Events也可以自定义事件
-    ```js
-      var ws = new WebSocket("wss://echo.websocket.org");
-      // 当连接建立成功，触发 open 事件
-      ws.onopen = function(evt) {
-        console.log("建立连接成功 ...");
-        // 连接建立成功以后，就可以使用这个连接对象通信了
-        // send 方法发送数据
-        ws.send("Hello WebSockets!");
-      };
+      ```js
+        var ws = new WebSocket("wss://echo.websocket.org");
+        // 当连接建立成功，触发 open 事件
+        ws.onopen = function(evt) {
+          console.log("建立连接成功 ...");
+          // 连接建立成功以后，就可以使用这个连接对象通信了
+          // send 方法发送数据
+          ws.send("Hello WebSockets!");
+        };
 
-      // 当接收到对方发送的消息的时候，触发 message 事件
-      // 我们可以通过回调函数的 evt.data 获取对方发送的数据内容
-      ws.onmessage = function(evt) {
-        console.log("接收到消息: " + evt.data);
-        // 当不需要通信的时候，可以手动的关闭连接
-        // ws.close();
-      };
+        // 当接收到对方发送的消息的时候，触发 message 事件
+        // 我们可以通过回调函数的 evt.data 获取对方发送的数据内容
+        ws.onmessage = function(evt) {
+          console.log("接收到消息: " + evt.data);
+          // 当不需要通信的时候，可以手动的关闭连接
+          // ws.close();
+        };
 
-      // 当连接断开的时候触发 close 事件
-      ws.onclose = function(evt) {
-        console.log("连接已关闭.");
-      }
-    ```
+        // 当连接断开的时候触发 close 事件
+        ws.onclose = function(evt) {
+          console.log("连接已关闭.");
+        }
+      ```
   5. WebSocket心跳机制
-    - 原理：利用心跳包及时发送和接收数据，保证WebSocket长连接不被断开。（即：客户端和服务器之间定时发送空数据包检测连接状态或停止无通信时的长连接）
-    - 心跳包：WebSocket协议的保活机制，用于维持长连接。心跳包是指在一定时间间隔内，WebSocket发送的空数据包
-    - 作用：
-      * 保持WebSocket连接不被断开。
-      * 检测WebSocket连接状态，及时处理异常情况。
-      * 减少WebSocket连接及服务器资源的消耗。
-    - 前端实现：
-      * 使用setInterval定时发送心跳包。
-      * 在前端监听到WebSocket的onclose()事件时，重新创建WebSocket连接。
+      - 原理：利用心跳包及时发送和接收数据，保证WebSocket长连接不被断开。（即：客户端和服务器之间定时发送空数据包检测连接状态或停止无通信时的长连接）
+      - 心跳包：WebSocket协议的保活机制，用于维持长连接。心跳包是指在一定时间间隔内，WebSocket发送的空数据包
+      - 作用：
+        * 保持WebSocket连接不被断开。
+        * 检测WebSocket连接状态，及时处理异常情况。
+        * 减少WebSocket连接及服务器资源的消耗。
+      - 前端实现：
+        * 使用setInterval定时发送心跳包。
+        * 在前端监听到WebSocket的onclose()事件时，重新创建WebSocket连接。
 ### *Web Worker*
   1. Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行
   2. 优点：实现多线程环境，摆脱了js的单线程
@@ -301,136 +301,136 @@
   5. 应用：大数据的处理；高频的用户交互
   6. 实现方式：分为两种类型：专用线程、共享线程。
   7. 专用线程
-    - 随当前页面的关闭而结束；
-    - 只能被创建它的页面访问。
-    - 使用 onmessage() ， postmessage()通信
-    ```js
-      /** 主线程 **/
-      //注册专用线程 参数是要在专用线程里执行的js文件
-      let worker = new Worker('worker.js')
-      worker.onmessage = (e) => {
-        console.log(e.data) // I post a message to main thread
-      }
-      worker.postMessage('main thread got a message')
-      // 在主线程中终止
-      worker.terminate()
-      
-      /**  子线程 worker.js  **/
-      onmessage = (e) => {
-          console.log(e.data) // main thread got a message
-      }
-      postMessage('I post a message to main thread')
-      
-      // 在子线程中终止自身
-      self.close()
-    ```
+      - 随当前页面的关闭而结束；
+      - 只能被创建它的页面访问。
+      - 使用 onmessage() ， postmessage()通信
+        ```js
+          /** 主线程 **/
+          //注册专用线程 参数是要在专用线程里执行的js文件
+          let worker = new Worker('worker.js')
+          worker.onmessage = (e) => {
+            console.log(e.data) // I post a message to main thread
+          }
+          worker.postMessage('main thread got a message')
+          // 在主线程中终止
+          worker.terminate()
+          
+          /**  子线程 worker.js  **/
+          onmessage = (e) => {
+              console.log(e.data) // main thread got a message
+          }
+          postMessage('I post a message to main thread')
+          
+          // 在子线程中终止自身
+          self.close()
+        ```
   8. 共享线程
-    - 可以被多个页面访问
-    - 需要用到port属性，接收需要先connect
-    ```js
-      //注册共享线程
-      let worker = new SharedWorker("sharedworker.js");
-      /**  主线程  **/
-      worker.port.onmessage = function(e){}
-      worker.port.postMessage('data');
-      // 在主线程中终止
-      worker.terminate()
-      
-      /** 子线程 **/
-      addEventListener('connect', function(event){
-          var port = event.ports[0]
-          //接收
-          port.onmessage = function(event){
-              console.log(event.data);
-          };
-          //发送
-          port.postMessage("data");
-          port.start();
-      });
-      // 在子线程中终止自身
-      self.close()
-    ```
+      - 可以被多个页面访问
+      - 需要用到port属性，接收需要先connect
+        ```js
+          //注册共享线程
+          let worker = new SharedWorker("sharedworker.js");
+          /**  主线程  **/
+          worker.port.onmessage = function(e){}
+          worker.port.postMessage('data');
+          // 在主线程中终止
+          worker.terminate()
+          
+          /** 子线程 **/
+          addEventListener('connect', function(event){
+              var port = event.ports[0]
+              //接收
+              port.onmessage = function(event){
+                  console.log(event.data);
+              };
+              //发送
+              port.postMessage("data");
+              port.start();
+          });
+          // 在子线程中终止自身
+          self.close()
+        ```
   9. 错误监听：两种方式的错误监听同SSE一样
-    ```js
-      worker.addEventListener("error", function(evt){  
-        alert("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);  
-      }, false);  
-    ```
+      ```js
+        worker.addEventListener("error", function(evt){  
+          alert("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);  
+        }, false);  
+      ```
 ### *Service workers*
   1. Service workers 本质上充当Web应用程序与浏览器之间的代理服务器，也可以在网络可用时作为浏览器和网络间的代理，创建有效的离线体验。 它是 Web Worker 的一个类型
   2. 优点：可以秒开或者离线访问
   3. 缺点：IE11 、Opera Mini 、IOS不支持
   4. 应用：推送通知 — 允许用户选择从网络应用程序及时更新。
-  4. 实现方式：
-    - vue项目中引入`register-service-worker`npm包，添加js配置文件
-    ```js
-      // serviceWorker.js
-      import { register } from 'register-service-worker'
+  5. 实现方式：
+      - vue项目中引入`register-service-worker`npm包，添加js配置文件
+        ```js
+          // serviceWorker.js
+          import { register } from 'register-service-worker'
 
-      if (process.env.NODE_ENV === 'production') {
-        register('service-worker.js', {
-          ready () {
-            console.log(
-              'App is being served from cache by a service worker.'
-            )
-          },
-          registered () {
-            console.log('Service worker has been registered.')
-          },
-          cached () {
-            console.log('Content has been cached for offline use.')
-          },
-          updatefound () {
-            console.log('New content is downloading.')
-          },
-          updated () {
-            console.log('New content is available; please refresh.')
-            window.location.reload(true)   // 这里需要刷新页面
-          },
-          offline () {
-            console.log('No internet connection found. App is running in offline mode.')
-          },
-          error (error) {
-            console.error('Error during service worker registration:', error)
+          if (process.env.NODE_ENV === 'production') {
+            register('service-worker.js', {
+              ready () {
+                console.log(
+                  'App is being served from cache by a service worker.'
+                )
+              },
+              registered () {
+                console.log('Service worker has been registered.')
+              },
+              cached () {
+                console.log('Content has been cached for offline use.')
+              },
+              updatefound () {
+                console.log('New content is downloading.')
+              },
+              updated () {
+                console.log('New content is available; please refresh.')
+                window.location.reload(true)   // 这里需要刷新页面
+              },
+              offline () {
+                console.log('No internet connection found. App is running in offline mode.')
+              },
+              error (error) {
+                console.error('Error during service worker registration:', error)
+              }
+            })
           }
-        })
-      }
-    ```
-    - 在 plugins 加入
-    ```js
-      plugins: [
-        new SWPrecacheWebpackPlugin({
-          cacheId: 'my-project-name',
-          filename: 'service-worker.js',
-          staticFileGlobs: ['dist/**/*.{js,html,css}'],
-          minify: true,
-          stripPrefix: 'dist/'
-        }),
+        ```
+      - 在 plugins 加入
+        ```js
+          plugins: [
+            new SWPrecacheWebpackPlugin({
+              cacheId: 'my-project-name',
+              filename: 'service-worker.js',
+              staticFileGlobs: ['dist/**/*.{js,html,css}'],
+              minify: true,
+              stripPrefix: 'dist/'
+            }),
 
-        new WebpackPwaManifest({
-          name: 'My Progressive Web App',
-          short_name: 'MyPWA',
-          description: 'My awesome Progressive Web App!',
-          background_color: '#ffffff',
-          crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
-          icons: [
-            {
-              src: path.resolve('src/assets/icon.png'),
-              sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-            },
-            {
-              src: path.resolve('src/assets/large-icon.png'),
-              size: '1024x1024' // you can also use the specifications pattern
-            }
+            new WebpackPwaManifest({
+              name: 'My Progressive Web App',
+              short_name: 'MyPWA',
+              description: 'My awesome Progressive Web App!',
+              background_color: '#ffffff',
+              crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+              icons: [
+                {
+                  src: path.resolve('src/assets/icon.png'),
+                  sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+                },
+                {
+                  src: path.resolve('src/assets/large-icon.png'),
+                  size: '1024x1024' // you can also use the specifications pattern
+                }
+              ]
+            }),
           ]
-        }),
-      ]
-    ```
-    - 这样打包出来的代码根目录里面多了个 service-worker.js ，html文件里面 pwa 相关元素也加上了。
-    - 在入口 main.js 引入该文件：
-    ```js
-      import './serviceWorker'
-    ```
+        ```
+      - 这样打包出来的代码根目录里面多了个 service-worker.js ，html文件里面 pwa 相关元素也加上了。
+      - 在入口 main.js 引入该文件：
+        ```js
+          import './serviceWorker'
+        ```
 ### *Flash Socket*
   1. 优点：实现真正的即时通信，而不是伪即时。
   2. 缺点：客户端必须安装Flash插件；非HTTP协议，无法自动穿越防火墙。

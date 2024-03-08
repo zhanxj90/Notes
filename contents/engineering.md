@@ -43,7 +43,7 @@
       - 但是为了实现模块的导出，Node中使用的是Module的类(提供了一个Module构造函数)，每一个模块都是Module的一个实例，也就是module；
       - module才是导出的真正实现者；
       - 所以在Node中真正用于导出的其实根本不是exports，而是module.exports。只是为了实现CommonJS的规范，也为了使用方便，Node为每个模块提供了一个exports对象，让其对module.exports有一个引用而已。
-      - 相当于在每个模块头部，有这样一行命令：var exports = module.exports;所以export只能添加属性，无法重新赋值
+      - 相当于在每个模块头部，有这样一行命令：var exports = module.exports;所以exports只能添加属性，无法重新赋值
       - 所以不能直接给exports、module.exports赋值，这样等于切断了exports和module.exports的联系。最终输出的结果只会是module.exports的值
 ### *AMD*
   1. AMD：Asynchronous Module Definition(异步模块定义)，浏览器端规范，主要实现者--RequireJS

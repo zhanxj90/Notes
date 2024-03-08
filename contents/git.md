@@ -86,7 +86,7 @@
         * 生成ssh key时修改成不同的名称，github的就叫id_rsa_github，gitee的就叫id_rsa_gitee。
         * 这样就可以使用不同的邮箱了，把这几个文件拷贝到当前用户的home目录下的.ssh中（比如/home/ubuntu/.ssh或者C:\Users\hynev\.ssh）
         * 写一个config配置文件用来映射不同的Git服务器与SSH Key文件。config配置文件没有后缀。
-        * config文件图示![](/assets/80cb39dbb6fd5266ab306099e293382dd50736b1.webp)
+        * config文件图示![](/assets/git_host_config.jpg)
         * Host和HostName填git服务器的域名；User分别填在这两个服务器上的邮箱；PreferredAuthentications publickey是固定写法；IdentityFile则分别填对应的公钥文件名称
         * 把私钥文件添加到SSH-Agent中。命令如下：ssh-add id_rsa_github以及ssh-add id_rsa_gitee。如果出现错误，先执行eval $(ssh-agent)，再执行ssh-add命令即可。
       - 都使用http授权

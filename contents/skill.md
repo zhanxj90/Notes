@@ -63,3 +63,21 @@
   4. 可能会出现的报错：
       - hosts文件修改不了：文件权限不够;Mac上打开文件简介，修改用户权限为读写，还不行接着修改上级目录的权限；window在属性中更改文件所有者
       - 页面打开白屏：可能页面打开时有重定向到企微域名过，域名代理被拦截了，控制台输入location.href='当前域名'跳转一下
+
+-----
+
+## 前端练习小游戏
+### *css类*
+  1. [练习css动画](css-animations.io)
+  2. [练习弹性盒](flexboxfroggy.com)
+  3. [练习弹性盒](codingfantasy.com)
+  4. [练习网格布局](cssgridgarden.com)
+  5. [练习css选择器](flukeout.github.io)
+### *js类*
+  1. [练习程序思维逻辑](https://lab.reaal.me/jsrobot/)
+  2. [练习promise](bevacqua.github.io/promisees)
+  3. [练习正则](regexcrossword.com)
+### *ts类*
+  1. [练习ts](typescript-exercises.github.io)
+### *git类*
+  1. [练习git命令](https://learngitbranching.js.org/?locale=zh_CN)

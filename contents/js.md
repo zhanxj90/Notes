@@ -707,16 +707,6 @@ https://www.cnblogs.com/ranyonsue/p/11201730.html
 - class+extends继承:es6语法。和寄生组合式继承区别在于不需要手动修改Son.prototype.constructor，并且Son._proto_指向的是父类（寄生组合式继承因手动修改了所以指向的是Function.prototype)
 
 
-有使用过混入（mixin），和组件的区别
-### mixin释义
-  - 混合 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。
-  - 混合对象可以包含任意组件选项。
-  - 当组件使用混合对象时，所有混合对象的选项将被混入该组件本身的选项。
-
-### mixin和组件的区别
-  - 组件相当于在父组件内开辟了一块单独的空间，来根据父组件props过来的值进行相应的操作，单本质上两者还是泾渭分明，相对独立。
-  - mixin则是将父组件里的内容和mixin的合并，扩充父组件内容，mixin就相当于基础数据
-
 
 动态路由权限添加
   ```js

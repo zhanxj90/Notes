@@ -109,7 +109,115 @@
 
 -----
 
-##
-### **
+## 鸭子辩型法
+  1. 概念：像鸭子一样走路、游泳和嘎嘎叫的鸟就是鸭子；在js中就是通过一个标准去判断某个类型，只要符合这个标准就是这个类型
+  2. 用途：一般用在模拟接口的实现。
+
+----- 
+
+## 里式替换原则
+### *概述*
+  1. 出现在面向对象中，是对子类型的特别定义
+  2. 子类的对象，始终可以赋值给父类；```let p:Father=new Son();class Son extend Fatther{}```
+  3. 子类可以扩展父类的功能，但不能改变父类原有的功能。也就是说：子类继承父类时，除添加新的方法完成新增功能外，尽量不要重写父类的方法。
+### *主要作用*
+  1. 实现开闭原则的重要方式之一。
+  2. 克服了继承中重写父类造成的可复用性变差的缺点。
+  3. 是动作正确性的保证。即类的扩展不会给已有的系统引入新的错误，降低了代码出错的可能性。
+  4. 加强程序的健壮性，同时变更时可以做到非常好的兼容性，提高程序的维护性、可扩展性，降低需求变更时引入的风险。
+### *具体定义*
+  1. 子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法
+  2. 子类中可以增加自己特有的方法
+  3. 当子类的方法重载父类的方法时，方法的前置条件（即方法的输入参数）要比父类的方法更宽松
+  4. 当子类的方法实现父类的方法时（重写/重载或实现抽象方法），方法的后置条件（即方法的的输出/返回值）要比父类的方法更严格或相等
 
 -----
+
+## 函数柯里化
+### *释义*
+  1. 柯里化（Currying）:计算机科学中，是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，并且返回新函数(新函数-接受余下的参数且返回结果)的技术。
+  2. 这个技术由 Christopher Strachey 以逻辑学家 Haskell Curry 命名的，尽管它是 Moses Schnfinkel 和 Gottlob Frege 发明的。
+  3. 柯里化函数：js中，固定某个函数的一些参数，得到该函数剩余参数的一个新函数，如果没有剩余参数，则调用
+### *实现*
+  1. 原函数固定参数数量的
+      ```js
+        function curry() {
+          var fn = arguments[0]; // 获取要执行的函数
+          var args = [].slice.call(arguments, 1); // 获取传递的参数，构成一个参数数组
+          // 如果传递的参数已经等于执行函数所需的参数数量
+          if (args.length === fn.length) {
+              return fn.apply(this, args)
+          }
+          // 参数不够向外界返回的函数
+          function _curry(){
+              // 推入之前判断
+              // 将新接收到的参数推入到参数数组中
+              args.push(...arguments);
+              if(args.length === fn.length){
+                  return fn.apply(this, args)
+              }
+              return _curry;
+          }
+          return _curry;
+        }
+      ```
+  2. 进阶--累加（不确定参数数量）
+      ```js
+        function add() {
+          // 第一次执行时，定义一个数组专门用来存储所有的参数
+          var _args = Array.prototype.slice.call(arguments);
+
+          // 在内部声明一个函数，利用闭包的特性保存 _args 并收集所有的参数值
+          var _adder = function () {
+              _args.push(...arguments);
+              return _adder;
+          };
+
+          // 这个是最后输出的时候被调用的，return 后面如果是函数体，
+          // 为了输出函数体字符串会自动调用 toString 方法
+          // 利用 toString 隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+          _adder.toString = function () {
+              return _args.reduce(function (a, b) {
+                  return a + b;
+              });
+          }
+
+          // 这个 return 是第一次调用的时候返回上面的函数体，
+          // 这样后面所有的括号再执行的时候就是执行 _adder 函数体
+          return _adder;
+        }
+        console.log(add(1)(2)(3).toString()); // 6
+        console.log(add(1, 2, 3)(4).toString()); // 10
+      ```
+
+-----
+
+## 函数管道
+### *释义*
+  1. 将多个单参数函数组合起来，形成一个新的函数，这些函数中，前一个函数的输出会作为后一个函数的输入。
+### *注意事项*
+  1. 前提条件：传入的函数一定都是单参，不然多出来的参数获取不到，也无法处理
+  2. 有多参函数的话，可以使用柯里化把该函数转成单参
+### *实现*
+  1. 写法一
+      ```js
+        function pipe(){
+          let args=Array.from(arguments)
+          return function(val){
+            for(let i=0;i<args.length;i ++){
+              let func=args[i]
+              val=func(val)
+            }
+            return val
+          }
+        }
+      ```
+  2. 写法二
+      ```js
+        function pipe(){
+          let args=Array.from(arguments)
+          return function(val){
+            return args.reduce((result,func)=>func(result),val)
+          }
+        }
+      ```

@@ -44,7 +44,35 @@
 ### *失败回调（reject,catch）*
   1. 
 ### *all的使用*
-  1. all方法是在Promise类上的，通过Promise.all使用。all接收一个数组参数(参数不一定是要promise，有返回就有值),数组全执行完才返回，有一个错了就走catch，全对才走then
+  1. all方法是在Promise类上的，通过Promise.all使用。
+  2. all接收一个具有Iterator接口的参数，一般都是数组(参数不一定是要promise，有返回就有值,不是promise的会自动添加promise.resolve包裹)。
+  3. 数组参数全执行完才返回结果，有一个错了就走catch，全对才走then
+  4. 简写all方法
+      ```js
+        function pAll (_promises) {
+          return new Promise((resolve, reject) => {
+            // Iterable => Array
+            const promises = Array.from(_promises)
+            // 结果用一个数组维护
+            const r = []
+            const len = promises.length
+            let count = 0
+            for (let i = 0; i < len; i++) {
+              // Promise.resolve 确保把所有数据都转化为 Promise
+              Promise.resolve(promises[i]).then(o => { 
+                // 因为 promise 是异步的，保持数组一一对应
+                r[i] = o;
+        
+                // 如果数组中所有 promise 都完成，则返回结果数组
+                if (++count === len) {
+                  resolve(r)
+                }
+                // 当发生异常时，直接 reject
+              }).catch(e => reject(e))
+            }
+          })
+        }
+      ```
 ### *race的使用*
   1. race方法是在Promise类上的，通过Promise.race使用。也是接收数组（同all），数组有个执行完了立马返回，对就then，错就catch。
 ### *手写Promise*
@@ -310,16 +338,18 @@
   4. 可用于替代列表中加载更多操作，消耗会比监听滚动事件小
 ### *visibilitychange*
   1. 当其选项卡的内容变得可见或被隐藏时，会在文档上触发(切换标签页会触发)
+### *requestIdleCallback*
+### *requestAnimationFrame*
 
 -----
 
 ## new操作符
-## *具体流程*
+### *具体流程*
   1. 新生成了一个对象；
   2. 链接到原型；
   3. 绑定 this；
   4. 返回新对象
-## *重写new方法*
+### *重写new方法*
   ```js
     function myNew(){
       // 创建一个空的对象
@@ -335,7 +365,10 @@
     }
   ```
 
+-----
+
 ## 原型和原型链
+### *描述总结*
   1. 所有对象都是通过```nwe 函数```创建的，字面量对象也是通过内部调用new实现的
       ```js
       var obj = {} // obj = new Object()
@@ -379,7 +412,7 @@
       // true
       console.log(obj2.__proto__ === Object.prototype)
       ```
-## *原型链*
+### *原型链*
   1. 对象属性成员的查找顺序：
       - 看该对象自身是否拥有该成员，如果有直接使用
       - 否则看该对象的隐式原型中是否拥有，如果有则使用
@@ -400,6 +433,32 @@
 
 -----
 
+## 响应式原理
+### *DefineProperty*
+### *Proxy*
+  1. 通过陷阱函数拦截对象的基本操作
+### *DefineProperty和Proxy区别*
+  1. 底层区别：
+      - proxy能拦截和重新定义**对象的基本操作**
+      - defineProperty实际使用的就是DefineOwnProperty这个内部函数，没有拦截基本操作；所以数组方法push、数组属性lanth这些defineProperty处理不了
+### *对象的基本操作*
+  1. 一些内部运行的函数（如\[\[GET]]、\[\[SET]]，obj.a调用的就是GET）
+  2. 方法列表（在ECMA-262文档中有写）
+### *陷阱函数*
+  1. 对象内部函数的对应操作函数
+  2. 通过陷阱函数可以拦截对象的基本操作（也就是内部函数）
+
+-----
+
+## 内存泄漏和闭包
+### *垃圾回收*
+  1. 垃圾：不再需要的内存（这里的需不需要由开发人员确定的，但是机器无法得知）
+  2. 垃圾回收机制：无法触达（程序已经无法访问）的内存空间会由垃圾回收器处理掉
+  3. 内存泄漏：不需要的，无法被垃圾回收机制处理（任然可以触达）的内存空间
+### *闭包*
+### *闭包是否会导致内存泄漏*
+  1. 闭包和其他内存泄漏没什么区别，都是持有了不再需要的函数引用，会导致函数关联的词法环境无法销毁，从而导致内存泄漏
+  2. 当多个函数共享词法环境时，会导致词法环境膨胀，从而导致出现无法触达也无法回收的内存空间
 
 git命令操作
 

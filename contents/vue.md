@@ -94,7 +94,7 @@
   1. Vite 是基于原生 ES6 Modules，在生产环境下打包使用的是 Rollup
   2. vue-cli 基于 webpack 封装，生产环境和开发环境都是基于 Webpack 打包。所以两者在生产环境下都是基于源代码文件打包
   3. 但在开发环境中，两者有所不同。Vite 在开发环境下，基于原生 ES6 ，无需对代码进行打包，浏览器可以直接调用。所以 Vite 因为基于浏览器的原生功能，省掉了打包过程，在开发环境中体验及其愉快。
-  4. vite 与 webpack 两者定位不同。webpack 是一个纯打包工具，vite 是更上层的工具链解决方案，类似（webpack + web 常用配置 + webpack-dev-server
+  4. vite 与 webpack 两者定位不同。webpack 是一个纯打包工具，vite 是更上层的工具链解决方案，类似webpack + web 常用配置 + webpack-dev-server
 
 -----
 

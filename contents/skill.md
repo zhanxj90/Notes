@@ -7,8 +7,10 @@
   2. Indent-Rainbow: 自动标红没有对齐的代码行
   3. Trailing Spaces: 高亮提示代码中冗余的空格，并可以快速删掉
   4. Bracket Pair Colorizer: 为代码中的各种结对的括号提供了颜色高亮等功能，增强代码阅读性
+  5. GitHub Copilot: 代码补全的ai工具
 ### *npm包*
   1. store.js：```npm i store```,跨浏览器的本地存储解决方案。
+  2. vite-plugin-inspect：```npm i vite-plugin-inspect```,分析vue单文件组件的编译结果。
 ### *webpack插件*
   1. clean-webpack-plugin:快速更新打包文件，自动清除打包目录旧文件
   2. html-webpack-plugin:自动生成html文件
@@ -27,6 +29,9 @@
         }
       }
     ```
+### *工具网站*
+  1. [svg滤镜](https://yoksel.github.io/svg-filters)
+  2. [svg path编辑器](https://yqnn.github.io/svg-path-editor)
 
 -----
 
@@ -68,16 +73,16 @@
 
 ## 前端练习小游戏
 ### *css类*
-  1. [练习css动画](css-animations.io)
-  2. [练习弹性盒](flexboxfroggy.com)
-  3. [练习弹性盒](codingfantasy.com)
-  4. [练习网格布局](cssgridgarden.com)
-  5. [练习css选择器](flukeout.github.io)
+  1. [练习css动画](https://css-animations.io)
+  2. [练习弹性盒](https://flexboxfroggy.com)
+  3. [练习弹性盒](https://codingfantasy.com)
+  4. [练习网格布局](https://cssgridgarden.com)
+  5. [练习css选择器](https://flukeout.github.io)
 ### *js类*
   1. [练习程序思维逻辑](https://lab.reaal.me/jsrobot/)
-  2. [练习promise](bevacqua.github.io/promisees)
-  3. [练习正则](regexcrossword.com)
+  2. [练习promise](https://bevacqua.github.io/promisees)
+  3. [练习正则](https://regexcrossword.com)
 ### *ts类*
-  1. [练习ts](typescript-exercises.github.io)
+  1. [练习ts](https://typescript-exercises.github.io)
 ### *git类*
   1. [练习git命令](https://learngitbranching.js.org/?locale=zh_CN)
